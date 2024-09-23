@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools >= 65.5.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+requires-python = ">=3.9,<4"
+name = "readme_generator"
+dependencies = [
+    "typer==0.12.*",
+]
+version = "0.0.0"
+
+[project.scripts]
+readme_generator = "readme_generator.main:cli"
+
+[tool.setuptools.packages.find]
+include = ["readme_generator"]
+namespaces = false
+
+[tool.black]
+line-length = 80
+
+[tool.isort]
+profile = "black"
+line_length = 80
+lines_after_imports = 2
+combine_as_imports = true
+py_version=312
+extend_skip_glob = ["tests/out*"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+reportIncompatibleVariableOverride = true
+reportIncompatibleMethodOverride = true
+useLibraryCodeForTypes = true
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+
+[tool.ruff]
+lint.select = ["F401"]
+line-length = 80

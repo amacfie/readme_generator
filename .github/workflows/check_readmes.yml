@@ -1,0 +1,24 @@
+name: check_readmes
+
+on:
+  push:
+    tags-ignore:
+      - '**'
+    branches:
+      - '**'
+
+jobs:
+  check_readmes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install readme_generator
+        run: |
+          pip install --upgrade pip setuptools wheel
+          pip install -e .
+      - name: Check the README files
+        run: readme_generator check ./readme_generator
