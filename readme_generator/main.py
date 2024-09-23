@@ -69,7 +69,7 @@ def check(package_root: Path):
                 f"README.md in {package_root} is missing or out of date.",
                 file=sys.stderr,
             )
-            typer.Exit(code=1)
+            raise typer.Exit(code=1)
         for subdir in package_root.iterdir():
             check(subdir)
 
