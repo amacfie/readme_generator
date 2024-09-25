@@ -21,17 +21,21 @@ def extract_docstring(file_path: Path) -> str:
 def generate_readme_content(directory: Path) -> str:
     init_file = directory / "__init__.py"
 
-    readme_content = "# [__init.py__](__init__.py)\n\n"
+    readme_content = "# [`__init.py__`](__init__.py)\n\n"
     readme_content += extract_docstring(init_file) + "\n\n"
 
-    for item in sorted(directory.iterdir(), key=lambda p: p.name):
-        if item.is_dir() and (item / "__init__.py").exists():
-            readme_content += "## [__init__.py](__init__.py)\n\n"
+    children = sorted(directory.iterdir(), key=lambda p: p.name)
+    for item in children:
+        if item.is_dir() and (item / "__init__.py").is_file():
+            readme_content += f"## [`{item.name}`]({item.name})\n\n"
             readme_content += extract_docstring(item / "__init__.py") + "\n\n"
-        elif item.is_file() and item.suffix == ".py":
-            if item.name == "__init__.py":
-                continue
-            readme_content += f"## [{item.name}]({item.name})\n\n"
+    for item in children:
+        if (
+            item.is_file()
+            and item.suffix == ".py"
+            and item.name != "__init__.py"
+        ):
+            readme_content += f"## [`{item.name}`]({item.name})\n\n"
             readme_content += extract_docstring(item) + "\n\n"
 
     return readme_content
